@@ -1,11 +1,12 @@
 Q1 - Fix or improve the implementaion of the below methods
+-- if I'm being completely honest, I'm not too sure how this one is supposed to work
 local function releaseStorage(player)
 player:setStorageValue(1000, -1)
 end
 
 function onLogout(player)
 if player:getStorageValue(1000) == 1 then
-addEvent(releaseStorage, 1000, player)
+addEvent(releaseStorage(player), 1000, player) -- the method call was missing the parameter, though I'm not sure if 'player' is what should go there
 end
 return true
 end
@@ -13,11 +14,12 @@ end
 
 
 Q2 - Fix or improve the implementation of the below method
+-- it seems wrong that memberCount is only used for resultId
 function printSmallGuildNames(memberCount)
 -- this method is supposed to print names of all guilds that have less than memberCount max members
 local selectGuildQuery = "SELECT name FROM guilds WHERE max_members < %d;"
 local resultId = db.storeQuery(string.format(selectGuildQuery, memberCount))
-local guildName = result.getString("name") -- 'result' isn't defined, maybe it should be resultId? also seems like it would only grab the first name rather than all
+local guildName = resultId.getString("name") -- 'result' isn't defined, maybe it should be resultId?
 print(guildName)
 end
 
