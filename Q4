@@ -1,0 +1,30 @@
+// skimming though before making edits, I can see that delete() is not used at all
+// this means the memory allocated to variables is not being deallocated, hence the memory leaks
+// I also changed the formatting to make it more readable 
+
+void Game::addItemToPlayer(const std::string& recipient, uint16_t itemId)
+{
+  Player* player = g_game.getPlayerByName(recipient);
+
+  if (!player) 
+  {
+      player = new Player(nullptr);
+      if (!IOLoginData::loadPlayerByName(player, recipient)) 
+      {
+        return;
+      }
+  }
+  
+  Item* item = Item::CreateItem(itemId);
+  if (!item) 
+  {
+    return;
+  }
+  
+  g_game.internalAddItem(player->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT);
+  
+  if (player->isOffline()) 
+  {
+    IOLoginData::savePlayer(player);
+  }
+}
