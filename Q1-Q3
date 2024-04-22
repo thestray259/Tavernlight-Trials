@@ -17,20 +17,22 @@ function printSmallGuildNames(memberCount)
 -- this method is supposed to print names of all guilds that have less than memberCount max members
 local selectGuildQuery = "SELECT name FROM guilds WHERE max_members < %d;"
 local resultId = db.storeQuery(string.format(selectGuildQuery, memberCount))
-local guildName = result.getString("name")
+local guildName = result.getString("name") -- 'result' isn't defined, maybe it should be resultId? also seems like it would only grab the first name rather than all
 print(guildName)
 end
 
 
 
 Q3 - Fix or improve the name and the implementation of the below method
-function do_sth_with_PlayerParty(playerId, membername)
+-- method appears to remove a member from the player's party so I renamed it to that, also changed it to be camelCase to be consistent with the rest
+function removeMemberFromPlayerParty(playerId, membername) 
 player = Player(playerId)
 local party = player:getParty()
 
-for k,v in pairs(party:getMembers()) do
+for k,v in pairs(party:getMembers()) 
+do -- when looking at Lua documentation, it shows that in for loops, 'do' is on the next line instead of the same line
 if v == Player(membername) then
-party:removeMember(Player(membername))
+party:removeMember(v) -- if v is the same as Player(membername), then why not do party:removeMember(v) instead?
 end
 end
 end
