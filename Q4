@@ -27,4 +27,10 @@ void Game::addItemToPlayer(const std::string& recipient, uint16_t itemId)
   {
     IOLoginData::savePlayer(player);
   }
+
+  // to avoid memory leaks, deleting the pointers at the end of the method is needed
+  // memory is allocated when making new pointers, memory is deallocated by using the delete keyword, code to be written in between
+  // delete pointers in reverse order of creation
+  delete(item);
+  delete(player);
 }
